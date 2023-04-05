@@ -97,8 +97,35 @@ router.post('/', [auth, [
     
 })
 
-router.get("/", (req, res) => {
-  res.status(200).send("Api profile working");
+// @route  GET api/profile
+// @desc   Create or update user profile 
+// @access Public
+router.get("/", async (req, res) => {
+    try{
+        const profiles = await Profile.find().populate('user', ["name", "avatar"]);
+        await res.status(200).json(profiles);
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).send('Server Error');
+    }
+    
+});
+
+// @route  GET api/profile/user/:user_id
+// @desc   Get Profile by user ID
+// @access Public
+router.get("/user/:user_id", async (req, res) => {
+    try{
+        const profile = await Profile.findOne({user: req.params.user_id}).populate('user', ["name", "avatar"]);
+        if (!profile) {
+            return res.status(404).json({msg: 'There is no profile for this user'})
+        } 
+        await res.status(200).json(profile);
+    } catch(error) {
+        console.log(error.message);
+        res.status(500).send('Server Error');
+    }
+    
 });
 
 
