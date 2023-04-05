@@ -35,33 +35,23 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     // see if users exists
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
-      if (user) {
+      if (!user) {
         return res.status(400).json({
-          errors: [{ msg: "User already exists" }],
+          errors: [{ msg: "Invalid credentials" }],
         });
       }
-      // Get users Gravatar
-      const avatar = gravatar.url(email, {
-        s: "200",
-        r: "pg",
-        d: "mm",
-      });
-      user = new User({
-        name,
-        email,
-        avatar,
-        password,
-      });
+      
+      const isMatch = await bcrypt.compare(password, user.password);
 
-      // Encrypt password
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
+      if(!isMatch) {
+        return res.status(400).json({
+          errors: [{ msg: "Invalid credentials" }],
+        });
+      }
 
       // Return jsonweb token
       const payload = {
