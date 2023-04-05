@@ -7,7 +7,8 @@ const db = config.get("mongoURI");
 const connectDB = async ()=> {
     try {
         await mongoose.connect(db, {
-            useNewUrlParser: true
+            useNewUrlParser: true, // if you get the deprecated warngin
+            useCreateIndex: true
         });
         console.log("mongdb connected");
     } catch(error) {
