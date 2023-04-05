@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const gravatar = require('gravatar');
+const bcrypt = require('bycryptjs');
 const { check, validationResult } = require("express-validator");
 const User = require('../../model/User');
 
@@ -35,22 +36,34 @@ router.post(
           errors: [{ msg: "User already exists" }],
         });
       }
-      res.send("user route");
+      // Get users Gravatar
+      const avatar = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm",
+      });
+      user = new User({
+        name,
+        email,
+        avatar,
+        password,
+      });
+
+      // Encrypt password
+      const salt = await bcrypt.getSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+
+      // Return jsonweb token
+      await user.save();
+
+      res.send("user registered");
     } catch (error) {
       console.log(error);
       res.status(500).send("server error");
     }
 
-    // Get users Gravatar
-    const avatar = gravatar.url(email, {
-      s: "200",
-      r: "pg",
-      d: "mm",
-    });
+   
 
-    // Encrypt password
-
-    // Return jsonweb token
   }
 );
 module.exports = router;
