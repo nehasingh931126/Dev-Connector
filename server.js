@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 5000; // If the environment variable set then w
 
 // connect DB
 connectDB();
+app.use(express.json({extended: false}));
 app.get('/', (req, res)=> {
     res.send('Api is runing')
 })
