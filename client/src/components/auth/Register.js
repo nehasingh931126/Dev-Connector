@@ -17,7 +17,10 @@ const Register = () => {
   function handleSubmit(event) {
     event.preventDefault();
     // You can do something with the form data here, such as sending it to a server
-    console.log(formData);
+    if(password !== password2) {
+      console.log('password not matching');
+    }
+    console.log(formData)
   }
 
   return (
@@ -34,6 +37,7 @@ const Register = () => {
             name="name"
             value={name}
             onChange={onChangeHandler}
+            required
           />
         </div>
         <div className="form-group">
