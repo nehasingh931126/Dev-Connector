@@ -1,0 +1,45 @@
+npx create-react-app my-app: for creating the Application
+npm install axios react-router-dom react-redux redux-thunk redux-devtools-extension moment react-moment
+
+axios: making request
+react-router-dom: Routing
+react-redux
+react-thunk
+redux-devtools-extension
+moment
+react-moment
+
+
+Remove the git folder in the sub folders since we need it only in the base
+
+
+To run client and to run both concurrently
+"client": "npm start --prefix client",
+"dev": "concurrently \"npm run server\" \"npm run client\"" 
+concurrently: this needs to be install first
+
+Fragment: just a ghost element that doesnot show up
+
+
+ReactRouter:
+BrowserRouter
+Routes
+Route
+
+
+<BrowserRouter>: Keep it in the 
+<Routes>
+      <Route path="/" element={<Landing/>} />
+</Routes>
+
+
+Basic :
+import React from "react";
+
+const Register = () => {
+  return <></>;
+};
+
+export default Register;
+
+
